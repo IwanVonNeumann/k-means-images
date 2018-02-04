@@ -1,8 +1,7 @@
 import os
-
 import imageio
-from sklearn.cluster import KMeans
 
+from sklearn.cluster import KMeans
 from clustering import make_color_mean_map, kmeans, assign_clusters
 from colors import get_unique_colors, replace_colors
 
@@ -19,7 +18,7 @@ unique_colors = list(get_unique_colors(img))
 print("unique colors:", len(unique_colors))
 
 # centers = kmeans(unique_colors, K, log=True) # manual implementation
-centers = KMeans(n_clusters=K, random_state=0).fit(unique_colors).cluster_centers_ # scikit-learn
+centers = KMeans(n_clusters=K, random_state=0).fit(unique_colors).cluster_centers_  # scikit-learn
 
 final_clusters = assign_clusters(unique_colors, centers)
 color_mean_map = make_color_mean_map(unique_colors, final_clusters)
