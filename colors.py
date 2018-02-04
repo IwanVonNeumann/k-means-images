@@ -8,14 +8,14 @@ def get_unique_colors(img):
 
     for i in range(n):
         for j in range(m):
-            point = (img[i, j, 0], img[i, j, 1], img[i, j, 2])
+            point = tuple(img[i, j])
             points.add(point)
 
     return points
 
 
 def round_color(color):
-    return tuple([round(color[0]), round(color[1]), round(color[2])])
+    return tuple([round(c) for c in color])
 
 
 def replace_colors(img, color_mean_map):
@@ -25,9 +25,8 @@ def replace_colors(img, color_mean_map):
 
     for i in range(n):
         for j in range(m):
-            point = (img[i, j, 0], img[i, j, 1], img[i, j, 2])
+            point = tuple(img[i, j])
             new_color = color_mean_map[point]
-            for c in range(3):
-                new_img[i, j, c] = new_color[c]
+            new_img[i, j] = new_color
 
     return new_img

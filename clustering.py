@@ -6,23 +6,39 @@ from collections import defaultdict
 from colors import round_color
 
 
+def kmeans(points, k, log=False):
+    previous_err = math.inf
+    delta_err = math.inf
+    i = 1
+
+    means = random_means(points, k)
+
+    while delta_err > 0:
+        if log:
+            print("iteration {}".format(i))
+
+        clusters = assign_clusters(points, means)
+        grouped_points = group_points(points, clusters)
+        means = recalculate_means(grouped_points)
+
+        current_err = cluster_error_sum(points, clusters)
+        delta_err = previous_err - current_err
+        previous_err = current_err
+
+        if log:
+            print("total error: {:.3f}".format(current_err))
+            print("delta error: {:.3f}".format(delta_err))
+            i += 1
+
+    return means
+
+
 def random_means(items, k):
     return random.sample(items, k)
 
 
-def distance(X, Y):
-    if len(X) != len(Y):
-        raise ValueError("Dimensions of objects do not match")
-
-    return sum([(float(x) - float(y)) ** 2 for x, y in zip(X, Y)])
-
-
 def assign_clusters(points, means):
-    clusters = []
-    for p in points:
-        nm = nearest_mean(p, means)
-        clusters.append(nm)
-    return clusters
+    return [nearest_mean(p, means) for p in points]
 
 
 def nearest_mean(point, means):
@@ -34,6 +50,13 @@ def nearest_mean(point, means):
             nearest = m
             min_dist = d
     return nearest
+
+
+def distance(X, Y):
+    if len(X) != len(Y):
+        raise ValueError("Dimensions of objects do not match")
+
+    return sum([(float(x) - float(y)) ** 2 for x, y in zip(X, Y)])
 
 
 def group_points(points, clusters):
@@ -64,30 +87,3 @@ def one_cluster_error(points, mean):
 
 def make_color_mean_map(colors, means):
     return {color: round_color(mean) for color, mean in zip(colors, means)}
-
-
-def kmeans(points, k, log=False):
-    previous_err = math.inf
-    delta_err = math.inf
-    i = 1
-
-    means = random_means(points, k)
-
-    while delta_err > 0:
-        if log:
-            print("iteration {}".format(i))
-
-        clusters = assign_clusters(points, means)
-        grouped_colors = group_points(points, clusters)
-        means = recalculate_means(grouped_colors)
-
-        current_err = cluster_error_sum(points, clusters)
-        delta_err = previous_err - current_err
-        previous_err = current_err
-
-        if log:
-            print("total error: {:.3f}".format(current_err))
-            print("delta error: {:.3f}".format(delta_err))
-            i += 1
-
-    return means
