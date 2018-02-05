@@ -10,7 +10,7 @@ K = 64
 images_dir_in = "img_in"
 images_dir_out = "img_out"
 
-source_img_file = "apples_400.jpg"
+source_img_file = "apples.jpg"
 
 source_img_path = os.path.join(images_dir_in, source_img_file)
 img = imageio.imread(source_img_path)
@@ -26,7 +26,7 @@ color_mean_map = make_color_mean_map(unique_colors, final_clusters)
 
 new_img = replace_colors(img, color_mean_map)
 
-result_img_file = "apples_out_400.png"
+result_img_file = "apples_out_{}.png".format(K)
 
 result_img_path = os.path.join(images_dir_out, result_img_file)
 imageio.imwrite(result_img_path, new_img)
