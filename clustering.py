@@ -1,8 +1,7 @@
-import random
 import math
+import random
 import numpy
 
-from collections import defaultdict
 from colors import round_color
 
 
