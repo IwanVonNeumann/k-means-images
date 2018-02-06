@@ -59,13 +59,10 @@ def distance(X, Y):
     return sum([(float(x) - float(y)) ** 2 for x, y in zip(X, Y)])
 
 
-def group_points(points, clusters):
-    grouped_points = defaultdict(list)
-    n = len(points)
-    for i in range(n):
-        c = clusters[i]
-        grouped_points[c].append(points[i])
-    return grouped_points
+def group_points(points, cluster_labels):
+    clusters = set(cluster_labels)
+    cp_pairs = zip(cluster_labels, points)
+    return {cluster: [p for c, p in cp_pairs if c == cluster] for cluster in clusters}
 
 
 def recalculate_means(grouped_points):
@@ -78,10 +75,10 @@ def calculate_mean(points):
 
 def cluster_error_sum(points, clusters):
     grouped_points = group_points(points, clusters)
-    return sum([one_cluster_error(points_in_group, mean) for mean, points_in_group in grouped_points.items()])
+    return sum([cluster_error(points_group, mean) for mean, points_group in grouped_points.items()])
 
 
-def one_cluster_error(points, mean):
+def cluster_error(points, mean):
     return sum([distance(p, mean) for p in points])
 
 
