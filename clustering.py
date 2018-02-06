@@ -16,11 +16,11 @@ def kmeans(points, k, log=False):
         if log:
             print("iteration {}".format(i))
 
-        clusters = assign_clusters(points, means)
-        grouped_points = group_points(points, clusters)
+        cluster_labels = assign_clusters(points, means)
+        grouped_points = group_points(points, cluster_labels)
         means = recalculate_means(grouped_points)
 
-        current_err = cluster_error_sum(points, clusters)
+        current_err = cluster_error_sum(points, cluster_labels)
         delta_err = previous_err - current_err
         previous_err = current_err
 
@@ -41,14 +41,7 @@ def assign_clusters(points, means):
 
 
 def nearest_mean(point, means):
-    nearest = None
-    min_dist = math.inf
-    for m in means:
-        d = distance(point, m)
-        if d < min_dist:
-            nearest = m
-            min_dist = d
-    return nearest
+    return min(means, key=lambda mean: distance(mean, point))
 
 
 def distance(X, Y):
@@ -72,8 +65,8 @@ def calculate_mean(points):
     return tuple(map(numpy.mean, zip(*points)))
 
 
-def cluster_error_sum(points, clusters):
-    grouped_points = group_points(points, clusters)
+def cluster_error_sum(points, cluster_labels):
+    grouped_points = group_points(points, cluster_labels)
     return sum([cluster_error(points_group, mean) for mean, points_group in grouped_points.items()])
 
 
