@@ -57,10 +57,10 @@ def group_points(points, cluster_labels):
 
 
 def recalculate_means(grouped_points):
-    return [calculate_mean(points) for points in grouped_points.values()]
+    return [mean_of_cluster(points) for points in grouped_points.values()]
 
 
-def calculate_mean(points):
+def mean_of_cluster(points):
     return tuple(map(numpy.mean, zip(*points)))
 
 
