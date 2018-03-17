@@ -18,7 +18,7 @@ img = imageio.imread(source_img_path)
 unique_colors = list(get_unique_colors(img))
 print("unique colors:", len(unique_colors))
 
-# centers = kmeans(unique_colors, K, log=True) # manual implementation
+# centers = kmeans(unique_colors, K, log=True)  # manual implementation
 centers = KMeans(n_clusters=K, random_state=0).fit(unique_colors).cluster_centers_  # scikit-learn
 
 final_clusters = assign_cluster_labels(unique_colors, centers)

@@ -1,10 +1,12 @@
 import math
 import random
-import numpy
+import numpy as np
 
 from colors import round_color
+from time_utils import measure_time
 
 
+@measure_time
 def kmeans(points, k, log=False):
     previous_err = math.inf
     delta_err = math.inf
@@ -61,7 +63,7 @@ def recalculate_means(grouped_points):
 
 
 def mean_of_cluster(points):
-    return tuple(map(numpy.mean, zip(*points)))
+    return tuple(map(np.mean, zip(*points)))
 
 
 def cluster_error_sum(points, cluster_labels):
