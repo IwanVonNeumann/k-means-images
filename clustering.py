@@ -46,9 +46,6 @@ def nearest_mean(point, means):
 
 
 def distance(X, Y):
-    if len(X) != len(Y):
-        raise ValueError("Dimensions of objects do not match")
-
     return sum([(float(x) - float(y)) ** 2 for x, y in zip(X, Y)])
 
 
