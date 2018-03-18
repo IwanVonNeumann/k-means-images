@@ -2,7 +2,6 @@ import math
 import random
 import numpy as np
 
-from colors import round_color
 from time_utils import measure_time
 
 
@@ -76,4 +75,4 @@ def cluster_error(points, mean):
 
 
 def make_color_mean_map(colors, means):
-    return {color: round_color(mean) for color, mean in zip(colors, means)}
+    return {color: mean for color, mean in zip(colors, means)}

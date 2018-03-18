@@ -14,6 +14,10 @@ def round_color(color):
     return tuple([round(c) for c in color])
 
 
+def round_colors(colors):
+    return [round_color(c) for c in colors]
+
+
 def replace_colors(img, color_mean_map):
     n = img.shape[0]
     m = img.shape[1]
