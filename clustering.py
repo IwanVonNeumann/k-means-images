@@ -17,7 +17,7 @@ def kmeans(points, k, log=False):
         if log:
             print("iteration {}".format(i))
 
-        cluster_labels = assign_cluster_labels(points, means)
+        cluster_labels = assign_labels(points, means)
         grouped_points = group_points(points, cluster_labels)
         means = recalculate_means(grouped_points)
 
@@ -37,7 +37,7 @@ def random_means(items, k):
     return random.sample(items, k)
 
 
-def assign_cluster_labels(points, means):
+def assign_labels(points, means):
     return [nearest_mean(p, means) for p in points]
 
 
