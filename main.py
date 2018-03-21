@@ -9,11 +9,10 @@ K = 64
 
 images_dir_in = "img_in"
 images_dir_out = "img_out"
-
 source_img_file = "apples.jpg"
-
 source_img_path = os.path.join(images_dir_in, source_img_file)
-img = imageio.imread(source_img_path)
+
+img = imageio.imread(source_img_path).astype(float)
 
 unique_colors = list(get_unique_colors(img))
 print("unique colors:", len(unique_colors))
@@ -28,6 +27,6 @@ color_mean_map = make_color_mean_map(unique_colors, rounded_labels)
 new_img = replace_colors(img, color_mean_map)
 
 result_img_file = "apples_out_{}.png".format(K)
-
 result_img_path = os.path.join(images_dir_out, result_img_file)
+
 imageio.imwrite(result_img_path, new_img)

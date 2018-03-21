@@ -46,7 +46,7 @@ def nearest_mean(point, means):
 
 
 def distance(X, Y):
-    return sum([(float(x) - float(y)) ** 2 for x, y in zip(X, Y)])
+    return sum([(x - y) ** 2 for x, y in zip(X, Y)])
 
 
 def group_points(points, cluster_labels):

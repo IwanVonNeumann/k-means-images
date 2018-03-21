@@ -21,7 +21,7 @@ def round_colors(colors):
 def replace_colors(img, color_mean_map):
     n = img.shape[0]
     m = img.shape[1]
-    new_img = np.empty_like(img)
+    new_img = np.empty_like(img, dtype=np.uint8)
 
     for i in range(n):
         for j in range(m):
