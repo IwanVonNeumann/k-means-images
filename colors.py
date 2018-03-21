@@ -2,9 +2,7 @@ import numpy as np
 
 
 def get_unique_colors(img):
-    n = img.shape[0]
-    m = img.shape[1]
-
+    n, m, _ = img.shape
     pixels = img.reshape((n * m, 3))
 
     return {tuple(p) for p in pixels}
@@ -19,9 +17,8 @@ def round_colors(colors):
 
 
 def replace_colors(img, color_mean_map):
-    n = img.shape[0]
-    m = img.shape[1]
     new_img = np.empty_like(img, dtype=np.uint8)
+    n, m, _ = new_img.shape
 
     for i in range(n):
         for j in range(m):
