@@ -59,7 +59,7 @@ def recalculate_means(grouped_points):
 
 
 def mean_of_cluster(points):
-    return tuple(map(np.mean, zip(*points)))
+    return tuple(np.array(points).mean(axis=0))
 
 
 def cluster_error_sum(points, cluster_labels):
