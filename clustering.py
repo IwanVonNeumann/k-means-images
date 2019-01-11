@@ -3,17 +3,23 @@ import random
 import numpy as np
 
 from scipy.spatial.distance import cdist
+from scipy.stats import rv_discrete
 
 from time_utils import measure_time
 
 
 @measure_time
-def kmeans(points, k, log=False):
+def kmeans(points, k, init='random', log=False):
+    i = 1
     previous_err = math.inf
     delta_err = math.inf
-    i = 1
 
-    means = random_means(points, k)
+    if init == 'random':
+        means = random_means(points, k)
+    elif init == 'kmeans++':
+        means = k_means_pp(points, k)
+    else:
+        raise ValueError('unknown init method: {}'.format(init))
 
     while delta_err > 0:
         if log:
@@ -37,6 +43,31 @@ def kmeans(points, k, log=False):
 
 def random_means(items, k):
     return random.sample(items, k)
+
+
+@measure_time
+def k_means_pp(items, k):
+
+    means = []
+    points = np.array(items)
+
+    n, _ = points.shape
+    random_index = random.randint(0, n - 1)
+    means.append(tuple(points[random_index, :]))
+    points = np.delete(points, obj=random_index, axis=0)
+
+    for i in range(k - 1):
+        D = cdist(points, np.array(means), metric='sqeuclidean')
+        dist_to_nearest = np.min(D, axis=1)
+        probs = dist_to_nearest / dist_to_nearest.sum()
+
+        n, _ = points.shape
+        random_distribution = rv_discrete(name='random_mean_gen', values=(np.arange(n), probs))
+        random_index = random_distribution.rvs()
+        means.append(tuple(points[random_index, :]))
+        points = np.delete(points, obj=random_index, axis=0)
+
+    return means
 
 
 def assign_labels(points, means):
