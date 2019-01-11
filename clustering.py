@@ -2,6 +2,8 @@ import math
 import random
 import numpy as np
 
+from scipy.spatial.distance import cdist
+
 from time_utils import measure_time
 
 
@@ -38,17 +40,12 @@ def random_means(items, k):
 
 
 def assign_labels(points, means):
-    return [nearest_mean(p, means) for p in points]
+    D = cdist(np.array(points), np.array(means), metric='sqeuclidean')
+    nearest_means_indices = np.argmin(D, axis=1)
+    return [means[i] for i in nearest_means_indices]
 
 
-def nearest_mean(point, means):
-    return min(means, key=lambda mean: distance(mean, point))
-
-
-def distance(X, Y):
-    return sum([(x - y) ** 2 for x, y in zip(X, Y)])
-
-
+# TODO think of numpy
 def group_points(points, cluster_labels):
     clusters = set(cluster_labels)
     return {cluster: [p for c, p in zip(cluster_labels, points) if c == cluster] for cluster in clusters}
@@ -62,13 +59,14 @@ def mean_of_cluster(points):
     return tuple(np.array(points).mean(axis=0))
 
 
+# TODO think of numpy
 def cluster_error_sum(points, cluster_labels):
     grouped_points = group_points(points, cluster_labels)
     return sum([cluster_error(points_group, mean) for mean, points_group in grouped_points.items()])
 
 
 def cluster_error(points, mean):
-    return sum([distance(p, mean) for p in points])
+    return np.sum(cdist(np.array(points), np.array([mean]), metric='sqeuclidean'))
 
 
 def make_color_mean_map(colors, means):
