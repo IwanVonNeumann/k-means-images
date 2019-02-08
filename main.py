@@ -19,11 +19,10 @@ unique_colors = list(get_unique_colors(img))
 print("unique colors:", len(unique_colors))
 
 # kmeans = MyKMeans(n_clusters=K)
-kmeans = MyKMeans(n_clusters=K, init='kmeans++')
-kmeans.fit(unique_colors, log=True)
-
+kmeans = MyKMeans(n_clusters=K, init='kmeans++', verbose=0)
 # kmeans = ScikitKMeans(n_clusters=K, random_state=0)
-# kmeans.fit(unique_colors)
+
+kmeans.fit(unique_colors)
 
 rounded_labels = round_colors(kmeans.labels_)
 color_mean_map = make_color_mean_map(unique_colors, rounded_labels)

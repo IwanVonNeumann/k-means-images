@@ -10,14 +10,15 @@ from time_utils import measure_time
 
 class KMeans:
 
-    def __init__(self, n_clusters, init='random'):
+    def __init__(self, n_clusters, init='random', verbose=0):
         self.n_clusters = n_clusters
         self.init = init
+        self.verbose = verbose
         self.cluster_centers_ = None
         self.labels_ = None
 
     @measure_time
-    def fit(self, points, log=False):
+    def fit(self, points):
         n_clusters = self.n_clusters
         init = self.init
 
@@ -33,7 +34,7 @@ class KMeans:
             raise ValueError('unknown init method: {}'.format(init))
 
         while delta_err > 0:
-            if log:
+            if self.verbose == 1:
                 print("iteration {}".format(i))
 
             labels = self.assign_labels(points, centers)
@@ -47,7 +48,7 @@ class KMeans:
             self.labels_ = labels
             self.cluster_centers_ = centers
 
-            if log:
+            if self.verbose == 1:
                 print("total error: {:.3f}".format(current_err))
                 print("delta error: {:.3f}".format(delta_err))
                 i += 1
