@@ -6,7 +6,8 @@ def measure_time(f):
         start = time.time()
         r = f(*args, **kwargs)
         end = time.time()
-        print("time elapsed: {:.4f}".format(end - start))
+        time_elapsed = end - start
+        print("time spent on {}: {:.4f}".format(f.__name__, time_elapsed))
         return r
 
     return wrapper
