@@ -25,10 +25,7 @@ kmeans.fit(unique_colors, log=True)
 # kmeans = ScikitKMeans(n_clusters=K, random_state=0)
 # kmeans.fit(unique_colors)
 
-centers = kmeans.cluster_centers_
-labels = kmeans.labels_
-
-rounded_labels = round_colors(labels)
+rounded_labels = round_colors(kmeans.labels_)
 color_mean_map = make_color_mean_map(unique_colors, rounded_labels)
 
 new_img = replace_colors(img, color_mean_map)
